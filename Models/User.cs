@@ -8,12 +8,12 @@ namespace _02_csharp_practicas_de_uso_basico.Models
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public string Email { get; set; }
-        public Genero Gender { get; set; }
-        public int Level { get; set; }
+        public gender Gender { get; set; }
+        public Role Role { get; set; }
     }
 
-    public enum Genero
+    public enum gender
     {
-        MUJER, HOMBRE
+        WOMAN, MAN
     }
 }

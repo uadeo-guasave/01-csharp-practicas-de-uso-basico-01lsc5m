@@ -16,7 +16,8 @@ namespace _02_csharp_practicas_de_uso_basico.Models
         [Required]
         public int Level { get; set; }
 
-        // Requerido por EFCore
+
+        // Manejado por EFCore
         public List<User> Users { get; set; }
         public List<RolesHasPermissions> Permissions { get; set; }
     }

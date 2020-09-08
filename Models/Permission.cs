@@ -14,7 +14,7 @@ namespace _02_csharp_practicas_de_uso_basico.Models
         public string Description { get; set; }
 
 
-        // Requerido por EFCore
+        // Manejado por EFCore
         public List<RolesHasPermissions> Roles { get; set; }
     }
 }

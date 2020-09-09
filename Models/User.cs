@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace _02_csharp_practicas_de_uso_basico.Models
 {
+    [Table("users")]
     public class User
     {
         public int Id { get; set; }

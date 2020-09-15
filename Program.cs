@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using _02_csharp_practicas_de_uso_basico.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace _02_csharp_practicas_de_uso_basico
 {
@@ -10,8 +11,29 @@ namespace _02_csharp_practicas_de_uso_basico
     static void Main(string[] args)
     {
       // Anterior();
-      setRolesAndPermissions();
+      // setRolesAndPermissions();
+      PrintRolesWithPermissions();
+    }
 
+    private static void PrintRolesWithPermissions()
+    {
+      using (var db = new MatutinoDbContext())
+      {
+        var roles = db.Roles
+                      .Include(r => r.Permissions)
+                        .ThenInclude(h => h.Permission)
+                      .ToList();
+        foreach (var role in roles)
+        {
+          var permissions = role.Permissions.ToList();
+          var perms = new List<string>();
+          foreach (var perm in permissions)
+          {
+            perms.Add(perm.Permission.Name);
+          }
+          System.Console.WriteLine($"{role.Name} has [{string.Join(',',perms.ToArray())}] permissions");
+        }
+      }
     }
 
     private static void setRolesAndPermissions()

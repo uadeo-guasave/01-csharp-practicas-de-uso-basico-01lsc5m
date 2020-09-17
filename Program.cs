@@ -12,7 +12,98 @@ namespace _02_csharp_practicas_de_uso_basico
     {
       // Anterior();
       // setRolesAndPermissions();
-      PrintRolesWithPermissions();
+      // PrintRolesWithPermissions();
+      // SaveNewUsers();
+      // PrintUserWithRoles();
+      PrintUsersWithPermissions();
+    }
+
+    private static void PrintUsersWithPermissions()
+    {
+      using (var db = new MatutinoDbContext())
+      {
+        var users = db.Users
+                      .Include(u => u.Role)
+                        .ThenInclude(r => r.Permissions)
+                          .ThenInclude(h => h.Permission)
+                      .ToList();
+        foreach (var user in users)
+        {
+          var rolesPermissions = user.Role.Permissions;
+          var permissions = new List<string>();
+          foreach (var rp in rolesPermissions)
+          {
+            permissions.Add(rp.Permission.Name);
+          }
+          System.Console.WriteLine($"Id:{user.Id}, Name:{user.Name}, Fullname:{user.FullName}, Role:{user.Role.Name}, Permission:{string.Join(", ", permissions)}");
+        }
+      }
+    }
+
+    private static void PrintUserWithRoles()
+    {
+      using (var db = new MatutinoDbContext())
+      {
+        try
+        {
+          var users = db.Users.Include(u => u.Role).ToList();
+          foreach (var user in users)
+          {
+            System.Console.WriteLine($"Id:{user.Id}, Name:{user.Name}, Fullname:{user.Firstname} {user.Lastname}, Rolename:{user.Role.Name}");
+          }
+        }
+        catch (Exception ex)
+        {
+          System.Console.WriteLine(ex.Message);
+        }
+      }
+    }
+
+    private static void SaveNewUsers()
+    {
+      var users = new List<User>
+      {
+        new User {
+          Name = "admin",
+          Password = "123",
+          Firstname = "Bidkar",
+          Lastname = "Aragón Cárdenas",
+          Email = "bidkar.aragon@uadeo.mx",
+          Gender = gender.MAN,
+          RoleId = 1
+        },
+        new User {
+          Name = "guest",
+          Password = "123",
+          Firstname = "Jordan",
+          Lastname = "Bojorquez",
+          Email = "jordan.bojorquez@uadeo.mx",
+          Gender = gender.MAN,
+          RoleId = 2
+        },
+        new User {
+          Name = "operator",
+          Password = "123",
+          Firstname = "Alejandra",
+          Lastname = "Garcia",
+          Email = "alejandra.garcia@uadeo.mx",
+          Gender = gender.WOMAN,
+          RoleId = 3
+        }
+      };
+      using (var db = new MatutinoDbContext())
+      {
+        try
+        {
+          db.Users.AddRange(users);
+          db.SaveChanges();
+          System.Console.WriteLine("Los usuarios han sido registrados correctamente.");
+        }
+        catch (Exception ex)
+        {
+          System.Console.WriteLine(ex.Message);
+        }
+      }
     }
 
     private static void PrintRolesWithPermissions()

@@ -25,3 +25,24 @@ SELECT r.name || ' has [' || GROUP_CONCAT(p.name, ', ') || '] permissions' as c
     ON r.id = h.role_id
   JOIN permissions p
     ON h.permission_id = p.id;
+
+-- consulta para mostrar los usuarios y su nombre de rol
+SELECT u.id,u.name,u.firstname || ' ' || u.lastname,r.name
+  FROM users u
+  JOIN roles r
+    ON u.role_id = r.id
+;
+
+-- consulta para mostrar usuarios con roles y permisos
+SELECT u.id as 'user_id',
+       u.name as 'user_name',
+       (u.firstname || ' ' || u.lastname) as 'user_fullname',
+       r.name as 'role_name',
+       GROUP_CONCAT(p.name, ', ') as 'permission_name'
+  FROM users u
+  JOIN roles r
+    ON u.role_id = r.id
+    JOIN roles_has_permissions h
+      ON r.id = h.role_id
+      JOIN permissions p
+        ON h.permission_id = p.id;

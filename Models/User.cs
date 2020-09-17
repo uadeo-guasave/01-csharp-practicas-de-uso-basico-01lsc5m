@@ -32,6 +32,10 @@ namespace _02_csharp_practicas_de_uso_basico.Models
 
         // Manejado por EFCore
         public Role Role { get; set; }
+
+        // Propiedades o métodos no mapeados por EFCore
+        [NotMapped]
+        public string FullName { get { return $"{this.Firstname} {this.Lastname}"; } }
     }
 
     public enum gender
